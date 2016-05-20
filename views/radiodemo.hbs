@@ -1,0 +1,11 @@
+<html>
+    <head>
+        <title>{{title}}</title>
+    </head>
+    <body>
+        {{#each nums}}
+            <input type="radio" name="group1" id="{{this}}">
+            <label for="{{this}}">Text{{this}}</label>
+        {{/each}}
+    </body>
+</html>
