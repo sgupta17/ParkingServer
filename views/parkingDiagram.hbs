@@ -6,13 +6,20 @@
         <br>
     </head>
     <body>
+      <div id="topSpots" width = "5000px">
         {{#each nums}}
             <input type="radio" name="group1" id="{{this}}">
-            <label for="{{this}}">{{this}}</label>
+            <label class="top" for="{{this}}">{{this}}</label>
         {{/each}}
+      </div>
+
+      <div id="bottomSpots">
         {{#each nums59}}
-            <input type="radio" name="group2" id="{{this}}">
-            <label for="{{this}}">{{this}}</label>
+          
+            <input type="radio" name="group1" id="{{this}}">
+            <label class="bottom" for="{{this}}">{{this}}</label>
         {{/each}}
+      </div>
+
     </body>
 </html>

@@ -9,19 +9,16 @@ app.get('/', function(req, res, next) {
     res.render('index', {title: "HELLO", content: "Hello, worasdfadsf!"});
 });
 
-app.get('/radiodemo', function(req, res) {
+app.get('/parkingDiagram', function(req, res) {
     var nums = [];
     for(var i = 1 ; i < 59; i++) {
         nums.push(i);
     }
-    res.render('radiodemo', {title: "Parking Diagram", nums: nums});
-});
-app.get('/radiodemo', function(req, res) {
     var nums59 = [];
-    for(var i = 59 ; i < 123; i++) {
+    for(var i = 122 ; i > 58; i--) {
         nums59.push(i);
     }
-    res.render('radiodemo', {title: "Parking Diagram", nums59: nums59});
+    res.render('parkingDiagram', {title: "Parking Diagram", nums: nums, nums59: nums59});
 });
 
 app.listen(3000);
