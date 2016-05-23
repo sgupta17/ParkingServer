@@ -2,11 +2,17 @@
     <head>
         <title>{{title}}</title>
         <link rel="stylesheet" type="text/css" href="DiagramButtons.css">
+        <div id = "header"> Please choose a parking spot and press submit at the bottom. </div>
+        <br>
     </head>
     <body>
         {{#each nums}}
             <input type="radio" name="group1" id="{{this}}">
-            <label for="{{this}}">Text{{this}}</label>
+            <label for="{{this}}">{{this}}</label>
+        {{/each}}
+        {{#each nums59}}
+            <input type="radio" name="group2" id="{{this}}">
+            <label for="{{this}}">{{this}}</label>
         {{/each}}
     </body>
 </html>
