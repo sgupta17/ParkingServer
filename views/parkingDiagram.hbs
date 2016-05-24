@@ -13,12 +13,34 @@
         {{/each}}
       </div>
 
-      <div id="bottomSpots">
-        {{#each nums61}}
+      <div id="bottomSpots1">
+        {{#each nums98}}
+            <input type="radio" name="group1" id="{{this}}">
+            <label class="bottom" for="{{this}}">{{this}}</label>
+        {{/each}}
 
+        <div class = "arrows">&darr;</div>  <div class = "arrows">&uarr;</div>
+
+        {{#each nums86}}
+            <input type="radio" name="group1" id="{{this}}">
+            <label class="bottom" for="{{this}}">{{this}}</label>
+        {{/each}}
+
+        <div class = "arrows">&darr;</div>  <div class = "arrows">&uarr;</div>
+
+        {{#each nums61}}
             <input type="radio" name="group1" id="{{this}}">
             <label class="bottom" for="{{this}}">{{this}}</label>
         {{/each}}
       </div>
+
+      <!-- <div id="bottomSpots2">
+
+      </div>
+
+      <div id="bottomSpots3">
+
+      </div> -->
+
     </body>
 </html>

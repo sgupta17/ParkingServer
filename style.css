@@ -11,18 +11,18 @@
     text-align: center;
     font-size : 30;
     font-family: Helvetica Neue;
-    font-weight: 100;
+    font-weight: 200;
     border-radius: 25px;
     border: 2px solid #a80533;
     width: 115px;
-    height: 45px;
+    height: 47px;
     margin: 0 auto;
-    transition: all .5s ease-in-out;
+    transition: all 0.7s ease-in-out;
 
   }
   #SubmitButton:hover {
     width: 150px;
-    height: 45px;
+    height: 47px;
     background: #a80533;
     -webkit-transition: width 1s; /* Safari */
     transition: width 1s;

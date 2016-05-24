@@ -33,13 +33,20 @@ label{
   justify-content: space-between;
 }
 
-#bottomSpots {
-  margin-top: 5%;
-  display: flex;
-  justify-content: space-between;
+.arrows {
+  font-size: 50px;
+  padding-right: 5px;
+  padding-left: 5px;
 }
 
-#entry1 {
+#bottomSpots1 {
+  margin-top: 5%;
+  display: flex;
+  justify-content: space-around;
+  float: left;
+}
+
+#entrance {
   width:100px;
 }
 

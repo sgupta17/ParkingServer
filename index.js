@@ -15,10 +15,18 @@ app.get('/parkingDiagram', function(req, res) {
         nums.push(i);
     }
     var nums61 = [];
-    for(var i = 122 ; i > 61; i--) {
+    for(var i = 85 ; i > 61; i--) {
         nums61.push(i);
     }
-    res.render('parkingDiagram', {title: "Parking Diagram", nums: nums, nums61: nums61});
+    var nums86 = [];
+    for(var i = 98 ; i > 85; i--) {
+        nums86.push(i);
+    }
+    var nums98 = [];
+    for(var i = 122 ; i > 98; i--) {
+        nums98.push(i);
+    }
+    res.render('parkingDiagram', {title: "Parking Diagram", nums: nums, nums61: nums61, nums86: nums86, nums98: nums98});
 });
 
 app.listen(3000);
