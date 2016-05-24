@@ -9,6 +9,7 @@ input[type="radio"] {
   text-align: center;
 }
 
+
 label{
     flex-shrink: 0;
     width: 37px;
@@ -24,7 +25,7 @@ label{
     font-weight: 100;
     font-size: 20px;
     cursor:pointer;
-    background:white;
+    background: #009933;
     position:relative;
     }
 #topSpots {
@@ -59,7 +60,7 @@ input:checked + label:before{
         left:-2px;
         height:60px;
         width:40px;
-        background:#3a3a3a ;
+        background: #262626;
         content:'';
         opacity:0;
     }
