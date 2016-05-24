@@ -11,14 +11,14 @@ app.get('/', function(req, res, next) {
 
 app.get('/parkingDiagram', function(req, res) {
     var nums = [];
-    for(var i = 1 ; i < 59; i++) {
+    for(var i = 1 ; i < 62; i++) {
         nums.push(i);
     }
-    var nums59 = [];
-    for(var i = 122 ; i > 58; i--) {
-        nums59.push(i);
+    var nums61 = [];
+    for(var i = 122 ; i > 61; i--) {
+        nums61.push(i);
     }
-    res.render('parkingDiagram', {title: "Parking Diagram", nums: nums, nums59: nums59});
+    res.render('parkingDiagram', {title: "Parking Diagram", nums: nums, nums61: nums61});
 });
 
 app.listen(3000);
