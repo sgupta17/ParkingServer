@@ -10,14 +10,14 @@ input[type="radio"] {
 }
 
 label{
-    width: 80px;
+    width: 60px;
     height:40px;
     padding-top: 20px;
-    padding-right: 5px;
+    padding-right: 4px;
     border-radius:1px;
     border: 2px #3a3a3a solid;
-    display:block;
-    line-height:25px;
+    display:inline;
+    line-height:150px;
     text-align:center;
     color:black;
     font-family: Helvetica Neue;
@@ -25,7 +25,7 @@ label{
     font-size: 40px;
     cursor:pointer;
     background:white;
-    position:relative;
+    position:inline;
     }
 input:checked + label:before{
        opacity:.6;
