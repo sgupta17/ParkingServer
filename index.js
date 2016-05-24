@@ -1,7 +1,9 @@
-config = require('config')
+config = require('./config')
 
 express = require('express')
 handlebars = require('handlebars')
+var dbSession = require('./models/session')
+
 
 var app = express();
 app.set('view engine', 'hbs');
@@ -11,24 +13,28 @@ app.get('/', function(req, res, next) {
     res.render('index', {title: "HELLO", content: "Hello, worasdfadsf!"});
 });
 
+const mongoose = require('mongoose');
+
+// Basic usage
+mongoose.connect('mongodb://localhost/parking');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
 app.use(session({
     secret: config.sessionSecret,
-    store: new MongoStore(options)
+    store: new MongoStore({mongooseConnection: mongoose.connection})
 }));
 
-const mongoose = require('mongoose');
-
-// Basic usage
-mongoose.connect(connectionOptions);
 
 app.use(session({
     store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
 
 app.get('/parkingDiagram', function(req, res) {
+    dbSession.findOne({}, function(err, session) {
+        if(err) throw err;
+        console.log(session);
+    });
     var nums = [];
     for(var i = 1 ; i < 62; i++) {
         nums.push(i);
