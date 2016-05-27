@@ -4,7 +4,7 @@ express = require('express')
 handlebars = require('handlebars')
 bodyParser = require('body-parser')
 var dbSession = require('./models/session')
-
+timestamps = require('mongoose-timestamp');
 
 var app = express();
 app.set('view engine', 'hbs');
@@ -39,6 +39,8 @@ app.post('/', function(req, res){
       if(session) {
         console.log(session);
         username = new Account();
+
+
         username.name = req.body.name;
         username.email = req.body.email;
         username.makemodel = req.body.makemodel;
@@ -46,6 +48,18 @@ app.post('/', function(req, res){
         username.sticker = req.body.sticker;
         username.linkSession = session._id;
         username.save(function (err){
+
+          console.log(username.createdAt); // Should be approximately now
+          console.log(username.createdAt === username.updatedAt); // true
+          // Wait 1 second and then update the user
+          setTimeout( function () {
+          username.username = 'Symbol';
+          username.save( function (err) {
+          console.log(username.updatedAt); // Should be approximately createdAt + 1 second
+          console.log(username.createdAt < username.updatedAt); // true
+          });
+        }, 1000);
+
           if(err) throw err;
         });
       }
