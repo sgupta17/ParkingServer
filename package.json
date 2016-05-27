@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/fchoudhury17/ParkingServer#readme",
   "dependencies": {
+    "body-parser": "^1.15.1",
     "connect-mongo": "^1.2.0",
     "express": "^4.13.4",
     "express-session": "^1.13.0",

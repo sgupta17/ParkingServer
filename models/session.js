@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var sessionSchema = new Schema({
-    queuePos: Number
+    _id: String
 });
 
 

@@ -4,10 +4,10 @@ var Schema = mongoose.Schema;
 var AccountSchema = new Schema({
 	name: String,
   email: String,
-  carMake: String,
-  carModel: String,
-  licensePlate: String,
-  stickerNum: Number,
+  makemodel: String,
+  plate: String,
+  sticker: String,
+	linkSession: {type: String, ref: 'Session'},
 	linkedSpot: { type: Schema.Types.ObjectId, ref: 'ParkingSpot' }
 });
 
