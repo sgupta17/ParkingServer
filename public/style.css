@@ -1,9 +1,22 @@
+/*#mainpage, #waiting {
+  background-image: url("kdslogo.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50%;
+}*/
+
+#kdslogo {
+  height: 60px;
+  width: 60px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 13px;
+  border-radius: 50%;
+  border: 1.5px solid black;
+}
+
 #pageHeader {
-    /*font-size: 30px;
-    margin: 0 auto;
-    width: 280px;
-    padding-bottom: 1%;
-    padding-top: 1%;*/
     color: #111;
     font-family: 'Helvetica Neue', sans-serif;
     font-size: 50px;
@@ -15,7 +28,8 @@
 
   .footer{
     position: fixed;
-    bottom: 0px;
+    bottom: 0;
+    left: 0;
     background-color: #152f56;
     color: #FFFFFF;
     width: 100%;
@@ -23,55 +37,6 @@
     padding-top: 5px;
     height: 30px;
   }
-
-.pageFooter {
- height: 50px;
- overflow: hidden;
- position: relative;
-}
-.pageFooter h1 {
- position: absolute;
- width: 100%;
- height: 100%;
- margin: 0;
- line-height: 50px;
- text-align: center;
- color: #111;
- font-family: 'Helvetica Neue', sans-serif;
- font-size: 20px;
- letter-spacing: -1px;
- line-height: 1;
- text-align: center;
- /* Starting position */
- -moz-transform:translateX(100%);
- -webkit-transform:translateX(100%);
- transform:translateX(100%);
- /* Apply animation to this element */
- -moz-animation: example1 15s linear infinite;
- -webkit-animation: example1 15s linear infinite;
- animation: example1 15s linear infinite;
-}
-/* Move it (define the animation) */
-@-moz-keyframes example1 {
- 0%   { -moz-transform: translateX(100%); }
- 100% { -moz-transform: translateX(-100%); }
-}
-@-webkit-keyframes example1 {
- 0%   { -webkit-transform: translateX(100%); }
- 100% { -webkit-transform: translateX(-100%); }
-}
-@keyframes example1 {
- 0%   {
- -moz-transform: translateX(100%); /* Firefox bug fix */
- -webkit-transform: translateX(100%); /* Firefox bug fix */
- transform: translateX(100%);
- }
- 100% {
- -moz-transform: translateX(-100%); /* Firefox bug fix */
- -webkit-transform: translateX(-100%); /* Firefox bug fix */
- transform: translateX(-100%);
- }
-}
 
   input[type="submit"]{
     color: #612776;
@@ -82,12 +47,13 @@
     font-weight: 200;
     border-radius: 15px;
     border: 2px solid #a80533;
-    width: 115px;
+    width: 175px;
     height: 47px;
     display: block;
     margin: 0 auto;
-    width: 20%;
+    margin-top: 20px;
   }
+
   input[type="submit"]:hover {
     /*width: 150px;*/
     height: 47px;
@@ -97,17 +63,32 @@
     background-color: #a80533;
   }
 
-  .form-group {
-    /*margin: 0 auto;
-    width: 50%;*/
-  }
-
   #form {
-    padding-top: 30px;
+    padding-top: 25px;
     padding-bottom: 30px;
     width: 50%;
     margin: 0 auto;
   }
+
+  #currentpos {
+    /*background-color: #002e57;*/
+    text-align: center;
+    font-size: 60;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  #posnum {
+    width: 100px;
+    top: 50%;
+    left: 50%;
+    transform: translate(150%, 0%);
+    text-align: center;
+    background-color: #a80533;
+  }
+
 
   input[type="text"] {
     display: block;

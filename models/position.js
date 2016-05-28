@@ -2,13 +2,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 timestamps = require('mongoose-timestamp');
 
-var AccountSchema = new Schema({
-	pos: number;
-	linkSession: {type: String, ref: 'Session'},
-	linkedSpot: { type: Schema.Types.ObjectId, ref: 'ParkingSpot' }
+var postionSchema = new Schema({
+  pos: [{type: Schema.Types.ObjectId, ref: 'Account'}]
 });
 
-AccountSchema.plugin(timestamps);
-var Account = mongoose.model('Account', AccountSchema);
+postionSchema.plugin(timestamps);
+var Position = mongoose.model('Position', postionSchema);
 
-module.exports = Account
+module.exports = Position

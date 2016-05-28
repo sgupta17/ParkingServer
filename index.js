@@ -5,6 +5,7 @@ handlebars = require('handlebars')
 bodyParser = require('body-parser')
 var dbSession = require('./models/session')
 timestamps = require('mongoose-timestamp');
+position = require('./models/position');
 
 var app = express();
 app.set('view engine', 'hbs');
@@ -29,8 +30,37 @@ app.use(session({
     store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
 
+position.findOne({}, function(err, pos) {
+  console.log(pos);
+  if(pos == null) {
+    newPos = new position();
+    newPos.pos = [];
+    newPos.save(function (err){
+      if(err) throw err;
+    })
+  }
+})
+
 app.get('/', function(req, res, next) {
     res.render('Parking');
+});
+
+
+
+
+app.get('/waiting', function(req, res, next) {
+  position.findOne({}).populate('pos').exec(function(err, line) {
+    if (err) throw err;
+    var counter = 0;
+    console.log(line.pos);
+    for(var i=0; i < line.pos.length; i++) {
+      if(line.pos[i].linkSession == req.session.id) {
+        counter = i+1;
+        break;
+      }
+    }
+    res.render('waiting', {pos: counter});
+  })
 });
 
 app.post('/', function(req, res){
@@ -48,23 +78,22 @@ app.post('/', function(req, res){
         username.sticker = req.body.sticker;
         username.linkSession = session._id;
         username.save(function (err){
-
+          if(err) throw err;
           console.log(username.createdAt); // Should be approximately now
           console.log(username.createdAt === username.updatedAt); // true
           // Wait 1 second and then update the user
-          setTimeout( function () {
-          username.username = 'Symbol';
-          username.save( function (err) {
-          console.log(username.updatedAt); // Should be approximately createdAt + 1 second
-          console.log(username.createdAt < username.updatedAt); // true
-          });
-        }, 1000);
 
-          if(err) throw err;
+        position.update({},
+        {$push: { "pos": username }},
+        function(err) {
+          if(err) { throw err }
+      });
+
         });
       }
-  });
+    });
   res.render('Parking');
+  res.redirect('waiting')
 })
 
 app.get('/parkingDiagram', function(req, res) {

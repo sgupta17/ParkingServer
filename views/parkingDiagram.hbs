@@ -2,10 +2,12 @@
     <head>
         <title>{{title}}</title>
         <link rel="stylesheet" type="text/css" href="DiagramButtons.css">
+        <link rel="stylesheet" type="text/css" href="style.css">
         <div id = "header"> Please choose a parking spot and press submit at the bottom. </div>
         <br>
     </head>
-    <body>
+    <body id = "seniorlot">
+      <div id = "spots">
       <div id="topSpots" width = "5000px">
         {{#each nums}}
             <input type="radio" name="group1" id="{{this}}">
@@ -34,8 +36,12 @@
         {{/each}}
       </div>
 
-      <div id = "SubmitButton"> Submit </div>
+    </div>
 
-
+      <input type="submit" id="SubmitButton">
     </body>
+    
+    <div class="footer">
+    Created by: Shreyas Gupta &amp; Fahim Choudhury
+    </div>
 </html>
