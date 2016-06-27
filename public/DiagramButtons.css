@@ -29,6 +29,10 @@ label{
     position:relative;
     }
 
+label.taken {
+  background-color: #B20000;
+}
+
 #topSpots {
   margin-top: 1%;
   display: flex;

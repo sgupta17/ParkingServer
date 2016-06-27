@@ -3,38 +3,60 @@
         <title>{{title}}</title>
         <link rel="stylesheet" type="text/css" href="DiagramButtons.css">
         <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="jquery.min.js"></script>
+        <script src="time.js"></script>
         <div id = "header"> Please choose a parking spot and press submit at the bottom. </div>
         <br>
     </head>
     <body id = "seniorlot">
-      <form method="POST" action="">
+      <form id = "parkingSubmission" method="POST" action="" >
       <div id = "spots">
       <div id="topSpots" width = "5000px">
         {{#each nums}}
-            <input type="radio" name="parkingSpot" id="{{this}}" value="{{this}}">
-            <label class="top" for="{{this}}">{{this}}</label>
+            {{#if this.taken}}
+            <input type="radio" name="parkingSpot" id="{{this.spot}}" value="{{this.spot}}" disabled required>
+            <label class="top taken" for="{{this.spot}}" >{{this.spot}}</label>
+            {{else}}
+            <input type="radio" name="parkingSpot" id="{{this.spot}}" value="{{this.spot}}" required>
+            <label class="top" for="{{this.spot}}">{{this.spot}}</label>
+            {{/if}}
         {{/each}}
       </div>
 
       <div id="bottomSpots1">
         {{#each nums98}}
-            <input type="radio" name="parkingSpot" id="{{this}}" value="{{this}}">
-            <label class="bottom" for="{{this}}">{{this}}</label>
+          {{#if this.taken}}
+          <input type="radio" name="parkingSpot" id="{{this.spot}}" value="{{this.spot}}" disabled>
+          <label class="top taken" for="{{this.spot}}" >{{this.spot}}</label>
+          {{else}}
+          <input type="radio" name="parkingSpot" id="{{this.spot}}" value="{{this.spot}}">
+          <label class="top" for="{{this.spot}}">{{this.spot}}</label>
+          {{/if}}
         {{/each}}
 
         <div class = "arrows">&darr;</div>  <div class = "arrows">&uarr;</div>
 
         {{#each nums86}}
-            <input type="radio" name="group1" id="{{this}}">
-            <label class="bottom" for="{{this}}">{{this}}</label>
+          {{#if this.taken}}
+          <input type="radio" name="parkingSpot" id="{{this.spot}}" value="{{this.spot}}" disabled>
+          <label class="top taken" for="{{this.spot}}" >{{this.spot}}</label>
+          {{else}}
+          <input type="radio" name="parkingSpot" id="{{this.spot}}" value="{{this.spot}}">
+          <label class="top" for="{{this.spot}}">{{this.spot}}</label>
+          {{/if}}
         {{/each}}
 
         <div class = "arrows">&darr;</div>  <div class = "arrows">&uarr;</div>
 
         {{#each nums61}}
-            <input type="radio" name="group1" id="{{this}}">
-            <label class="bottom" for="{{this}}">{{this}}</label>
-        {{/each}}
+          {{#if this.taken}}
+          <input type="radio" name="parkingSpot" id="{{this.spot}}" value="{{this.spot}}" disabled>
+          <label class="top taken" for="{{this.spot}}" >{{this.spot}}</label>
+          {{else}}
+          <input type="radio" name="parkingSpot" id="{{this.spot}}" value="{{this.spot}}">
+          <label class="top" for="{{this.spot}}">{{this.spot}}</label>
+          {{/if}}
+          {{/each}}
       </div>
 
     </div>
@@ -42,6 +64,10 @@
       <input type="submit" id="SubmitButton">
     </form>
   </body>
+
+  <div id = 'timer'>
+    You have <div id = 'currenttime'>45</div> seconds to complete this form. </div>
+  </div>
 
     <div class="footer">
     Created by: Shreyas Gupta &amp; Fahim Choudhury

@@ -9,7 +9,7 @@ var AccountSchema = new Schema({
   plate: String,
   sticker: String,
 	linkSession: {type: String, ref: 'Session'},
-	linkedSpot: {type: Schema.Types.ObjectId, ref: 'ParkingSpot'}
+	linkedSpot: Number
 });
 
 AccountSchema.plugin(timestamps);

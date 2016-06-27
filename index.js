@@ -1,7 +1,10 @@
 config = require('./config')
 Account = require('./models/username')
 express = require('express')
-handlebars = require('handlebars')
+hbs = require('hbs');
+var helpers = require('handlebars-helpers')({
+  handlebars:hbs
+});
 bodyParser = require('body-parser')
 var dbSession = require('./models/session')
 timestamps = require('mongoose-timestamp');
@@ -23,6 +26,7 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/parking');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+
 
 app.use(session({
     secret: config.sessionSecret,
@@ -59,6 +63,21 @@ parkingSpot.findOne({}, function(err, spot) {
 
 app.get('/', function(req, res, next) {
     res.render('Parking');
+});
+
+app.get('/updatepos', function(req, res, next) {
+  position.findOne({}).populate('pos').exec(function(err, line) {
+    if (err) throw err;
+    var counter = 0;
+    // console.log(line.pos);
+    for(var i=0; i < line.pos.length; i++) {
+      if(line.pos[i].linkSession == req.session.id) {
+        counter = i+1;
+        break;
+      }
+    }
+    res.json({pos: ordinal(counter)});
+  });
 });
 
 app.get('/waiting', function(req, res, next) {
@@ -115,29 +134,41 @@ app.get('/parkingDiagram', function(req, res) {
         if(err) throw err;
         console.log(user);
     });
-    var nums = [];
-    for(var i = 1 ; i < 62; i++) {
-        nums.push(i);
-    }
-    var nums61 = [];
-    for(var i = 74 ; i > 61; i--) {
-        nums61.push(i);
-    }
-    var nums86 = [];
-    for(var i = 105 ; i > 74; i--) {
-        nums86.push(i);
-    }
-    var nums98 = [];
-    for(var i = 122 ; i > 105; i--) {
-        nums98.push(i);
-    }
-    res.render('parkingDiagram', {title: "Parking Diagram", nums: nums, nums61: nums61, nums86: nums86, nums98: nums98});
+    parkingSpot.find({}, function(err, arrSpots) {
+      if(err) throw err;
+      var spots = {};
+      for(var i = 0; i < arrSpots.length; i++) {
+        spots[arrSpots[i].spot] = arrSpots[i];
+      }
+      console.log(spots);
+      var nums = [];
+      for(var i = 1 ; i < 62; i++) {
+          nums.push(spots[i]);
+      }
+      var nums61 = [];
+      for(var i = 74 ; i > 61; i--) {
+          nums61.push(spots[i]);
+      }
+      var nums86 = [];
+      for(var i = 105 ; i > 74; i--) {
+          nums86.push(spots[i]);
+      }
+      var nums98 = [];
+      for(var i = 122 ; i > 105; i--) {
+          nums98.push(spots[i]);
+      }
+      res.render('parkingDiagram', {title: "Parking Diagram", nums: nums, nums61: nums61, nums86: nums86, nums98: nums98});
+
+    });
+
 });
 
 app.post('/parkingDiagram', function(req, res) {
   Account.findOne({linkSession: req.session.id}, function(err, user) {
       if(err) throw err;
       console.log(req.body.parkingSpot);
+      if (!(req.body.parkingSpot)) {
+      } else {
       parkingSpot.findOne({spot: req.body.parkingSpot}, function (err, spot) {
         console.log(spot);
         spot.linkedStudent = user;
@@ -149,22 +180,18 @@ app.post('/parkingDiagram', function(req, res) {
         user.save(function (err){
           if(err) throw err;
         })
-
-        // NEED TO DO --- Attempting to remove from queue and move person behind them up.
-        // position.findOne({}, function(err, pos) {
-        //   if(pos == 1) {
-        //     for(var i = 0; i < line.pos.length; i++) {
-        //       pos[i+1] = pos[i];
-        //       pos.save(function (err){
-        //         if(err) throw err;
-        //       })
-        //     }
-        //   }
-        // });
-
       })
+    }
   });
   res.send("Thank You!");
+  position.findOne({}, function(err, pos) {
+    if(pos != null) {
+      pos.pos.shift();
+      pos.save(function (err){
+        if(err) throw err;
+      })
+    }
+  });
 });
 
 app.listen(3000);
