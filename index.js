@@ -6,6 +6,9 @@ bodyParser = require('body-parser')
 var dbSession = require('./models/session')
 timestamps = require('mongoose-timestamp');
 position = require('./models/position');
+ordinal = require('ordinal').english;
+parkingSpot = require('./models/parkingSpot');
+
 
 var app = express();
 app.set('view engine', 'hbs');
@@ -31,7 +34,7 @@ app.use(session({
 }));
 
 position.findOne({}, function(err, pos) {
-  console.log(pos);
+  // console.log(pos);
   if(pos == null) {
     newPos = new position();
     newPos.pos = [];
@@ -39,27 +42,41 @@ position.findOne({}, function(err, pos) {
       if(err) throw err;
     })
   }
+});
+
+parkingSpot.findOne({}, function(err, spot) {
+  if(spot == null) {
+    for(var i = 0; i < 122; i++){
+      newSpot = new parkingSpot();
+      newSpot.taken = false;
+      newSpot.spot = i+1;
+      newSpot.save(function (err){
+        if(err) throw err;
+      })
+    }
+  }
 })
 
 app.get('/', function(req, res, next) {
     res.render('Parking');
 });
 
-
-
-
 app.get('/waiting', function(req, res, next) {
   position.findOne({}).populate('pos').exec(function(err, line) {
     if (err) throw err;
     var counter = 0;
-    console.log(line.pos);
+    // console.log(line.pos);
     for(var i=0; i < line.pos.length; i++) {
       if(line.pos[i].linkSession == req.session.id) {
         counter = i+1;
         break;
       }
     }
-    res.render('waiting', {pos: counter});
+    if (counter == 1) {
+      res.redirect('parkingDiagram');
+    } else {
+    res.render('waiting', {pos: ordinal(counter)});
+    }
   })
 });
 
@@ -67,10 +84,8 @@ app.post('/', function(req, res){
   dbSession.findOne({"_id": req.session.id}, function(err, session) {
       if(err) throw err;
       if(session) {
-        console.log(session);
+        // console.log(session);
         username = new Account();
-
-
         username.name = req.body.name;
         username.email = req.body.email;
         username.makemodel = req.body.makemodel;
@@ -79,10 +94,9 @@ app.post('/', function(req, res){
         username.linkSession = session._id;
         username.save(function (err){
           if(err) throw err;
-          console.log(username.createdAt); // Should be approximately now
-          console.log(username.createdAt === username.updatedAt); // true
+          // console.log(username.createdAt); // Should be approximately now
+          // console.log(username.createdAt === username.updatedAt); // true
           // Wait 1 second and then update the user
-
         position.update({},
         {$push: { "pos": username }},
         function(err) {
@@ -118,6 +132,39 @@ app.get('/parkingDiagram', function(req, res) {
         nums98.push(i);
     }
     res.render('parkingDiagram', {title: "Parking Diagram", nums: nums, nums61: nums61, nums86: nums86, nums98: nums98});
+});
+
+app.post('/parkingDiagram', function(req, res) {
+  Account.findOne({linkSession: req.session.id}, function(err, user) {
+      if(err) throw err;
+      console.log(req.body.parkingSpot);
+      parkingSpot.findOne({spot: req.body.parkingSpot}, function (err, spot) {
+        console.log(spot);
+        spot.linkedStudent = user;
+        spot.taken = true;
+        user.linkedSpot = spot.spot;
+        spot.save(function (err){
+          if(err) throw err;
+        })
+        user.save(function (err){
+          if(err) throw err;
+        })
+
+        // NEED TO DO --- Attempting to remove from queue and move person behind them up.
+        // position.findOne({}, function(err, pos) {
+        //   if(pos == 1) {
+        //     for(var i = 0; i < line.pos.length; i++) {
+        //       pos[i+1] = pos[i];
+        //       pos.save(function (err){
+        //         if(err) throw err;
+        //       })
+        //     }
+        //   }
+        // });
+
+      })
+  });
+  res.send("Thank You!");
 });
 
 app.listen(3000);

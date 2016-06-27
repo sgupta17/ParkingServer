@@ -24,6 +24,7 @@
     "express-session": "^1.13.0",
     "handlebars": "^4.0.5",
     "hbs": "^4.0.0",
-    "mongoose": "^4.4.17"
+    "mongoose": "^4.4.17",
+    "ordinal": "0.0.4"
   }
 }

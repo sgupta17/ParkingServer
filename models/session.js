@@ -5,7 +5,6 @@ var sessionSchema = new Schema({
     _id: String
 });
 
-
 var Session = mongoose.model('Session', sessionSchema);
 
 module.exports = Session;

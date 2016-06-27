@@ -7,17 +7,18 @@
         <br>
     </head>
     <body id = "seniorlot">
+      <form method="POST" action="">
       <div id = "spots">
       <div id="topSpots" width = "5000px">
         {{#each nums}}
-            <input type="radio" name="group1" id="{{this}}">
+            <input type="radio" name="parkingSpot" id="{{this}}" value="{{this}}">
             <label class="top" for="{{this}}">{{this}}</label>
         {{/each}}
       </div>
 
       <div id="bottomSpots1">
         {{#each nums98}}
-            <input type="radio" name="group1" id="{{this}}">
+            <input type="radio" name="parkingSpot" id="{{this}}" value="{{this}}">
             <label class="bottom" for="{{this}}">{{this}}</label>
         {{/each}}
 
@@ -39,8 +40,9 @@
     </div>
 
       <input type="submit" id="SubmitButton">
-    </body>
-    
+    </form>
+  </body>
+
     <div class="footer">
     Created by: Shreyas Gupta &amp; Fahim Choudhury
     </div>
