@@ -93,6 +93,8 @@ app.get('/waiting', function(req, res, next) {
     }
     if (counter == 1) {
       res.redirect('parkingDiagram');
+    } else if (counter == 0) {
+      res.redirect('/');
     } else {
     res.render('waiting', {pos: ordinal(counter)});
     }
@@ -130,10 +132,10 @@ app.post('/', function(req, res){
 })
 
 app.get('/parkingDiagram', function(req, res) {
-    Account.findOne({linkSession: req.session.id}, function(err, user) {
-        if(err) throw err;
-        console.log(user);
-    });
+  position.findOne({}).populate('pos').exec(function(err, line) {
+    if (line.pos[0].linkSession == req.session.id) {
+    if (err) throw err;
+
     parkingSpot.find({}, function(err, arrSpots) {
       if(err) throw err;
       var spots = {};
@@ -160,6 +162,10 @@ app.get('/parkingDiagram', function(req, res) {
       res.render('parkingDiagram', {title: "Parking Diagram", nums: nums, nums61: nums61, nums86: nums86, nums98: nums98});
 
     });
+  } else {
+    res.redirect('waiting');
+  }
+});
 
 });
 
