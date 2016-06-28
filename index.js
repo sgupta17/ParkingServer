@@ -19,8 +19,6 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-
-
 const mongoose = require('mongoose');
 
 mongoose.connect('mongodb://localhost/parking');
@@ -101,6 +99,14 @@ app.get('/waiting', function(req, res, next) {
   })
 });
 
+app.get('/completed', function(req, res, next) {
+    res.render('completed');
+});
+
+app.get('/timeout', function(req, res, next) {
+    res.render('timeout');
+});
+
 app.post('/', function(req, res){
   dbSession.findOne({"_id": req.session.id}, function(err, session) {
       if(err) throw err;
@@ -172,11 +178,9 @@ app.get('/parkingDiagram', function(req, res) {
 app.post('/parkingDiagram', function(req, res) {
   Account.findOne({linkSession: req.session.id}, function(err, user) {
       if(err) throw err;
-      console.log(req.body.parkingSpot);
       if (!(req.body.parkingSpot)) {
       } else {
       parkingSpot.findOne({spot: req.body.parkingSpot}, function (err, spot) {
-        console.log(spot);
         spot.linkedStudent = user;
         spot.taken = true;
         user.linkedSpot = spot.spot;
@@ -189,7 +193,7 @@ app.post('/parkingDiagram', function(req, res) {
       })
     }
   });
-  res.send("Thank You!");
+  res.redirect('completed');
   position.findOne({}, function(err, pos) {
     if(pos != null) {
       pos.pos.shift();

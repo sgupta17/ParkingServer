@@ -89,6 +89,61 @@
     background-color: #a80533;
   }
 
+  #timer {
+    text-align: center;
+    font-size: 30;
+    position: absolute;
+    margin-top: 5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  #currentTime {
+    width: 60px;
+    font-size: 40;
+    margin-left: 18%;
+    transform: translate(150%, 0%);
+    background-color: #a80533;
+  }
+
+  #finalcontainer {
+    background-color: #5C9BFA;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px;
+    text-align: center;
+  }
+
+  #thanks {
+    font-size: 55px;
+  }
+
+  #message {
+    font-size: 25px;
+    padding-top: 10px;
+  }
+
+  #creators {
+    font-size: 15px;
+    padding-top: 15px;
+    font-style: italic;
+  }
+
+  #link {
+    font-size: 15px;
+    padding-top: 5px;
+    font-style: italic;
+  }
+
+  a:link {
+    color: black;
+  }
+
+  a:hover {
+    color: black;
+  }
 
   input[type="text"] {
     display: block;
