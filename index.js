@@ -111,8 +111,15 @@ app.post('/', function(req, res){
   dbSession.findOne({"_id": req.session.id}, function(err, session) {
       if(err) throw err;
       if(session) {
-        // console.log(session);
         username = new Account();
+
+        // Account.findOne({email: req.body.email}, function(err, user) {
+        //   console.log(user);
+        //    if(user.email == req.body.email) {
+        //      res.redirect('/');
+        //    }
+        // });
+
         username.name = req.body.name;
         username.email = req.body.email;
         username.makemodel = req.body.makemodel;
@@ -121,9 +128,6 @@ app.post('/', function(req, res){
         username.linkSession = session._id;
         username.save(function (err){
           if(err) throw err;
-          // console.log(username.createdAt); // Should be approximately now
-          // console.log(username.createdAt === username.updatedAt); // true
-          // Wait 1 second and then update the user
         position.update({},
         {$push: { "pos": username }},
         function(err) {
@@ -139,6 +143,9 @@ app.post('/', function(req, res){
 
 app.get('/parkingDiagram', function(req, res) {
   position.findOne({}).populate('pos').exec(function(err, line) {
+    if (line.pos[0] == undefined) {
+      res.redirect('/')
+    } else {
     if (line.pos[0].linkSession == req.session.id) {
     if (err) throw err;
 
@@ -148,7 +155,6 @@ app.get('/parkingDiagram', function(req, res) {
       for(var i = 0; i < arrSpots.length; i++) {
         spots[arrSpots[i].spot] = arrSpots[i];
       }
-      console.log(spots);
       var nums = [];
       for(var i = 1 ; i < 62; i++) {
           nums.push(spots[i]);
@@ -171,6 +177,7 @@ app.get('/parkingDiagram', function(req, res) {
   } else {
     res.redirect('waiting');
   }
+}
 });
 
 });
@@ -179,6 +186,7 @@ app.post('/parkingDiagram', function(req, res) {
   Account.findOne({linkSession: req.session.id}, function(err, user) {
       if(err) throw err;
       if (!(req.body.parkingSpot)) {
+        res.redirect('timeout');
       } else {
       parkingSpot.findOne({spot: req.body.parkingSpot}, function (err, spot) {
         spot.linkedStudent = user;
@@ -191,9 +199,10 @@ app.post('/parkingDiagram', function(req, res) {
           if(err) throw err;
         })
       })
+      res.redirect('completed');
     }
   });
-  res.redirect('completed');
+
   position.findOne({}, function(err, pos) {
     if(pos != null) {
       pos.pos.shift();
