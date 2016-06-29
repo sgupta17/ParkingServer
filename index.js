@@ -107,38 +107,40 @@ app.get('/timeout', function(req, res, next) {
     res.render('timeout');
 });
 
+app.get('/duplicate', function(req, res, next) {
+    res.render('duplicate');
+});
+
 app.post('/', function(req, res){
+  Account.findOne({email: req.body.email}, function(err, user) {
+    if(err) throw err;
+    if(user == null) {
   dbSession.findOne({"_id": req.session.id}, function(err, session) {
       if(err) throw err;
       if(session) {
-        username = new Account();
-
-        // Account.findOne({email: req.body.email}, function(err, user) {
-        //   console.log(user);
-        //    if(user.email == req.body.email) {
-        //      res.redirect('/');
-        //    }
-        // });
-
-        username.name = req.body.name;
-        username.email = req.body.email;
-        username.makemodel = req.body.makemodel;
-        username.plate = req.body.plate;
-        username.sticker = req.body.sticker;
-        username.linkSession = session._id;
-        username.save(function (err){
-          if(err) throw err;
-        position.update({},
-        {$push: { "pos": username }},
-        function(err) {
-          if(err) { throw err }
-      });
-
+             username = new Account();
+             username.name = req.body.name;
+             username.email = req.body.email;
+             username.makemodel = req.body.makemodel;
+             username.plate = req.body.plate;
+             username.sticker = req.body.sticker;
+             username.linkSession = session._id;
+             username.save(function (err){
+               if(err) throw err;
+               position.update({},
+                 {$push: { "pos": username }},
+                 function(err) {
+                   if(err) { throw err }
+                 });
+             });
+           }
         });
-      }
-    });
+        res.redirect('waiting');
+    } else {
+        return res.redirect('duplicate');
+    }
+  });
   res.render('Parking');
-  res.redirect('waiting')
 })
 
 app.get('/parkingDiagram', function(req, res) {
@@ -185,8 +187,19 @@ app.get('/parkingDiagram', function(req, res) {
 app.post('/parkingDiagram', function(req, res) {
   Account.findOne({linkSession: req.session.id}, function(err, user) {
       if(err) throw err;
+      position.findOne({}, function(err, pos) {
+        if(pos != null) {
+          pos.pos.shift();
+          pos.save(function (err){
+            if(err) throw err;
+          })
+        }
+      });
       if (!(req.body.parkingSpot)) {
-        res.redirect('timeout');
+        Account.findOneAndRemove({linkSession: req.session.id}, function (err) {
+          res.redirect('timeout');
+          if (err) throw err;
+      });
       } else {
       parkingSpot.findOne({spot: req.body.parkingSpot}, function (err, spot) {
         spot.linkedStudent = user;
@@ -202,15 +215,14 @@ app.post('/parkingDiagram', function(req, res) {
       res.redirect('completed');
     }
   });
-
-  position.findOne({}, function(err, pos) {
-    if(pos != null) {
-      pos.pos.shift();
-      pos.save(function (err){
-        if(err) throw err;
-      })
-    }
-  });
 });
+
+// app.post('/timeout', function(req, res) {
+//     Account.findOneAndRemove({linkSession: req.session.id}, function (err) {
+//       if (err) throw err;
+//   });
+// });
+
+
 
 app.listen(3000);

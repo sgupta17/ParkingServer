@@ -145,7 +145,11 @@
     color: black;
   }
 
-  input[type="text"] {
+  a:visited {
+    color: black;
+  }
+
+  input[type="text"], input[type="email"] {
     display: block;
     width: 100%;
     font-family: sans-serif;
@@ -160,7 +164,7 @@
     margin: 0 auto;
     margin-bottom: 5%;
   }
-  input[type="text"]:focus {
+  input[type="text"]:focus, input[type="email"]:focus {
     outline: none;
     border: solid 1px #707070;
     box-shadow: 0 0 5px 1px #969696;

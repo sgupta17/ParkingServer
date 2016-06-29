@@ -1,4 +1,4 @@
-var counter = 5;
+var counter = 45;
 
 $(function() {
   setTimeout(prepare, 1000);
