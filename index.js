@@ -11,6 +11,7 @@ timestamps = require('mongoose-timestamp');
 position = require('./models/position');
 ordinal = require('ordinal').english;
 parkingSpot = require('./models/parkingSpot');
+var MongoStore = require('connect-mongo/es5')(session);
 
 
 var app = express();

@@ -20,14 +20,16 @@
   "dependencies": {
     "body-parser": "^1.15.1",
     "connect-mongo": "^1.2.0",
-    "express": "^4.13.4",
+    "express": "~4.14.0",
     "express-session": "^1.13.0",
     "flipclock": "^0.7.8",
     "handlebars": "^4.0.5",
-    "handlebars-helpers": "^0.6.1",
-    "hbs": "^4.0.0",
-    "mongoose": "^4.4.17",
+    "handlebars-helpers": "~0.6.1",
+    "hbs": "~4.0.0",
+    "mongoose": "~4.5.2",
     "ordinal": "0.0.4",
-    "serve-favicon": "^2.3.0"
+    "serve-favicon": "^2.3.0",
+    "nodemon": "~1.9.2",
+    "mongoose-timestamp": "~0.5.0"
   }
 }
