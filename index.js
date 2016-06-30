@@ -11,7 +11,6 @@ timestamps = require('mongoose-timestamp');
 position = require('./models/position');
 ordinal = require('ordinal').english;
 parkingSpot = require('./models/parkingSpot');
-var MongoStore = require('connect-mongo/es5')(session);
 
 
 var app = express();
@@ -24,7 +23,7 @@ const mongoose = require('mongoose');
 
 mongoose.connect('mongodb://localhost/parking');
 const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+var MongoStore = require('connect-mongo/es5')(session);
 
 
 app.use(session({
