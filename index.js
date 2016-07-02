@@ -223,6 +223,4 @@ app.post('/parkingDiagram', function(req, res) {
 //   });
 // });
 
-
-
 app.listen(3000);
