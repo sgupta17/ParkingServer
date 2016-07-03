@@ -140,7 +140,7 @@ app.post('/', function(req, res){
         return res.redirect('duplicate');
     }
   });
-  res.render('Parking');
+  return res.render('Parking');
 })
 
 app.get('/parkingDiagram', function(req, res) {
@@ -177,7 +177,7 @@ app.get('/parkingDiagram', function(req, res) {
 
     });
   } else {
-    res.redirect('waiting');
+    return res.redirect('waiting');
   }
 }
 });
