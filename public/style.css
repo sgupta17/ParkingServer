@@ -16,6 +16,17 @@
   border: 1.5px solid black;
 }
 
+#median {
+  background-color: grey;
+  /*border-radius: 3%;*/
+  text-align: center;
+  margin-top: 10px;
+  padding-top: 7px;
+  font-size: 35px;
+  height: 60px;
+  width: 100%;
+}
+
 #pageHeader {
     color: #111;
     font-family: 'Helvetica Neue', sans-serif;

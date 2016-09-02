@@ -143,7 +143,7 @@ app.post('/', function(req, res){
   res.render('Parking');
 })
 
-app.get('/parkingDiagram', function(req, res) {
+app.get('/parkingDiagramSenior', function(req, res) {
   position.findOne({}).populate('pos').exec(function(err, line) {
     if (line.pos[0] == undefined) {
       res.redirect('/')
@@ -173,7 +173,48 @@ app.get('/parkingDiagram', function(req, res) {
       for(var i = 122 ; i > 105; i--) {
           nums98.push(spots[i]);
       }
-      res.render('parkingDiagram', {title: "Parking Diagram", nums: nums, nums61: nums61, nums86: nums86, nums98: nums98});
+      res.render('parkingDiagramSenior', {title: "Parking Diagram Seniors", nums: nums, nums61: nums61, nums86: nums86, nums98: nums98});
+
+    });
+  } else {
+    res.redirect('waiting');
+  }
+}
+});
+
+});
+
+app.get('/parkingDiagram', function(req, res) {
+  position.findOne({}).populate('pos').exec(function(err, line) {
+    if (line.pos[0] == undefined) {
+      res.redirect('/')
+    } else {
+    if (line.pos[0].linkSession == req.session.id) {
+    if (err) throw err;
+
+    parkingSpot.find({}, function(err, arrSpots) {
+      if(err) throw err;
+      var spots = {};
+      for(var i = 0; i < arrSpots.length; i++) {
+        spots[arrSpots[i].spot] = arrSpots[i];
+      }
+      var nums = [];
+      for(var i = 1 ; i < 24; i++) {
+          nums.push(spots[i]);
+      }
+      var nums30 = [];
+      for(var i = 47 ; i > 23; i--) {
+          nums30.push(spots[i]);
+      }
+      var nums60 = [];
+      for(var i = 48 ; i < 72; i++) {
+          nums60.push(spots[i]);
+      }
+      var nums90 = [];
+      for(var i = 72 ; i < 97; i++) {
+          nums90.push(spots[i]);
+      }
+      res.render('parkingDiagram', {title: "Parking Diagram Juniors", nums: nums, nums30: nums30, nums60: nums60, nums90: nums90});
 
     });
   } else {
@@ -185,6 +226,39 @@ app.get('/parkingDiagram', function(req, res) {
 });
 
 app.post('/parkingDiagram', function(req, res) {
+  Account.findOne({linkSession: req.session.id}, function(err, user) {
+      if(err) throw err;
+      position.findOne({}, function(err, pos) {
+        if(pos != null) {
+          pos.pos.shift();
+          pos.save(function (err){
+            if(err) throw err;
+          })
+        }
+      });
+      if (!(req.body.parkingSpot)) {
+        Account.findOneAndRemove({linkSession: req.session.id}, function (err) {
+          res.redirect('timeout');
+          if (err) throw err;
+      });
+      } else {
+      parkingSpot.findOne({spot: req.body.parkingSpot}, function (err, spot) {
+        spot.linkedStudent = user;
+        spot.taken = true;
+        user.linkedSpot = spot.spot;
+        spot.save(function (err){
+          if(err) throw err;
+        })
+        user.save(function (err){
+          if(err) throw err;
+        })
+      })
+      res.redirect('completed');
+    }
+  });
+});
+
+app.post('/parkingDiagramSenior', function(req, res) {
   Account.findOne({linkSession: req.session.id}, function(err, user) {
       if(err) throw err;
       position.findOne({}, function(err, pos) {

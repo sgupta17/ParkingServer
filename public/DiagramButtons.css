@@ -33,10 +33,15 @@ label.taken {
   background-color: #B20000;
 }
 
-#topSpots {
+#topSpots, #firstRow, #secondRow, #thirdRow, #fourthRow {
   margin-top: 1%;
   display: flex;
   justify-content: space-between;
+}
+
+#middleSection {
+  margin-left: 3%;
+  margin-right: 3%;
 }
 
 #spots {
