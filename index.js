@@ -193,28 +193,28 @@ app.get('/parkingDiagram', function(req, res) {
     if (err) throw err;
 
     parkingSpot.find({}, function(err, arrSpots) {
-      if(err) throw err;
-      var spots = {};
-      for(var i = 0; i < arrSpots.length; i++) {
-        spots[arrSpots[i].spot] = arrSpots[i];
-      }
-      var nums = [];
-      for(var i = 1 ; i < 24; i++) {
-          nums.push(spots[i]);
-      }
-      var nums30 = [];
-      for(var i = 47 ; i > 23; i--) {
-          nums30.push(spots[i]);
-      }
-      var nums60 = [];
-      for(var i = 48 ; i < 72; i++) {
-          nums60.push(spots[i]);
-      }
-      var nums90 = [];
-      for(var i = 72 ; i < 97; i++) {
-          nums90.push(spots[i]);
-      }
-      res.render('parkingDiagram', {title: "Parking Diagram Juniors", nums: nums, nums30: nums30, nums60: nums60, nums90: nums90});
+         if(err) throw err;
+         var spots = {};
+         for(var i = 0; i < arrSpots.length; i++) {
+           spots[arrSpots[i].spot] = arrSpots[i];
+         }
+         var nums = [];
+         for(var i = 1 ; i < 62; i++) {
+             nums.push(spots[i]);
+         }
+         var nums61 = [];
+         for(var i = 74 ; i > 61; i--) {
+             nums61.push(spots[i]);
+         }
+         var nums86 = [];
+         for(var i = 105 ; i > 74; i--) {
+             nums86.push(spots[i]);
+         }
+         var nums98 = [];
+         for(var i = 122 ; i > 105; i--) {
+             nums98.push(spots[i]);
+         }
+         res.render('parkingDiagram', {title: "Parking Diagram Seniors", nums: nums, nums61: nums61, nums86: nums86, nums98: nums98});
 
     });
   } else {
