@@ -3,10 +3,10 @@ $(function() {
 })
 
 function prepare() {
-  $.get('/updatepos', function(data) {
+  $.get('/juniors/updatepos', function(data) {
     $('#posnum').html(data.pos);
     if (data.pos == "1st") {
-      window.location = '/parkingDiagram';
+      window.location = '/juniors/parkingDiagram';
     }
   })
   setTimeout(prepare, 1000);

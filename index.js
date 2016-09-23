@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/parking');
+mongoose.connect('mongodb://localhost/parkingjuniors');
 const session = require('express-session');
 var MongoStore = require('connect-mongo/es5')(session);
 
@@ -297,4 +297,4 @@ app.post('/parkingDiagramSenior', function(req, res) {
 //   });
 // });
 
-app.listen(3000);
+app.listen(3001);
