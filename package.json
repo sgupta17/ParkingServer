@@ -1,5 +1,5 @@
 {
-  "name": "parkingserver",
+  "name": "parkingserversenior",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fchoudhury17/ParkingServer.git"
+    "url": "git+https://github.com/sgupta17/ParkingServer.git"
   },
   "author": "Shreyas Gupta & Fahim Choudhury",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/fchoudhury17/ParkingServer/issues"
+    "url": "https://github.com/sgupta17/ParkingServer/issues"
   },
-  "homepage": "https://github.com/fchoudhury17/ParkingServer#readme",
+  "homepage": "https://github.com/sgupta17/ParkingServer#readme",
   "dependencies": {
     "body-parser": "^1.15.1",
     "connect-mongo": "^1.2.0",

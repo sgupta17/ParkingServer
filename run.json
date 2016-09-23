@@ -1,0 +1,6 @@
+{
+	"uid": "ParkingSenior",
+	"append": true,
+	"script": "index.js",
+	"sourceDir": "."
+}
