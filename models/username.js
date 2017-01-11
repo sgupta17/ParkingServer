@@ -4,7 +4,10 @@ timestamps = require('mongoose-timestamp');
 
 var AccountSchema = new Schema({
 	name: String,
-  email: String,
+  email: {
+	type: String,
+	unique: true	
+  },
   makemodel: String,
   plate: String,
   sticker: String,

@@ -11,6 +11,7 @@ timestamps = require('mongoose-timestamp');
 position = require('./models/position');
 ordinal = require('ordinal').english;
 parkingSpot = require('./models/parkingSpot');
+var passport = require('passport');
 
 
 var app = express();
@@ -18,13 +19,45 @@ app.set('view engine', 'hbs');
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-
 const mongoose = require('mongoose');
 
 mongoose.connect('mongodb://localhost/parkingjuniors');
 const session = require('express-session');
 var MongoStore = require('connect-mongo/es5')(session);
 
+app.use(passport.initialize());
+
+passport.serializeUser(function(user, done) {
+        done(null, user.id);
+    });
+
+    // used to deserialize the user
+    passport.deserializeUser(function(id, done) {
+        Account.findById(id, function(err, user) {
+            done(err, user);
+        });
+    });
+
+var GoogleStrategy = require('passport-google-oauth20').Strategy;
+
+passport.use(new GoogleStrategy({
+    clientID: '272308266717-r3mi6mjr9798tapo9btd4nhtp0mnbdll.apps.googleusercontent.com',
+    clientSecret: 'ySiF779MuFPQuj25s9wISz_a',
+    callbackURL: "https://www.kdsatp.org/juniors/auth/google/callback"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+	//console.log(profile);	
+	//console.log(profile.emails);
+    Account.create({ googleId: profile.id }, function (err, user) {
+      	if(err) throw err;
+	user.email = profile.emails[0].value;
+	user.name = profile.displayName;
+	user.save(function(err, user2) {
+		return cb(err, user2);
+	});
+    });
+  }
+));
 
 app.use(session({
     secret: config.sessionSecret,
@@ -60,7 +93,11 @@ parkingSpot.findOne({}, function(err, spot) {
 })
 
 app.get('/', function(req, res, next) {
-    res.render('Parking');
+    if(req.session.passport) {
+	res.render('Parking');
+    } else { 
+    	res.redirect('/juniors/auth/google');
+    }
 });
 
 app.get('/updatepos', function(req, res, next) {
@@ -78,13 +115,23 @@ app.get('/updatepos', function(req, res, next) {
   });
 });
 
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.profile.emails.read'] }));
+
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    return res.redirect('/juniors');
+  });
+
 app.get('/waiting', function(req, res, next) {
   position.findOne({}).populate('pos').exec(function(err, line) {
     if (err) throw err;
     var counter = 0;
     // console.log(line.pos);
     for(var i=0; i < line.pos.length; i++) {
-      if(line.pos[i].linkSession == req.session.id) {
+     if(line.pos[i].linkSession == req.session.id) {
         counter = i+1;
         break;
       }
@@ -111,36 +158,31 @@ app.get('/duplicate', function(req, res, next) {
     res.render('duplicate');
 });
 
-app.post('/', function(req, res){
-  Account.findOne({email: req.body.email}, function(err, user) {
-    if(err) throw err;
-    if(user == null) {
-  dbSession.findOne({"_id": req.session.id}, function(err, session) {
+app.post('/', 
+function(req, res){
+	console.log(req.session);
+	console.log(req.user);  
+	
+dbSession.findOne({"_id": req.session.id}, function(err, session) {
       if(err) throw err;
       if(session) {
-             username = new Account();
-             username.name = req.body.name;
-             username.email = req.body.email;
-             username.makemodel = req.body.makemodel;
-             username.plate = req.body.plate;
-             username.sticker = req.body.sticker;
-             username.linkSession = session._id;
-             username.save(function (err){
+	Account.findOne({_id: req.session.passport.user}, function(err, user) {
+	     user.makemodel = req.body.makemodel;
+             user.plate = req.body.plate;
+             user.sticker = req.body.sticker;
+		user.linkSession = session._id;
+             user.save(function (err){
                if(err) throw err;
                position.update({},
-                 {$push: { "pos": username }},
+                 {$push: { "pos": user }},
                  function(err) {
                    if(err) { throw err }
                  });
              });
-           }
-        });
-        res.redirect('waiting');
-    } else {
-        return res.redirect('duplicate');
-    }
-  });
-  return res.render('Parking');
+           });
+	}
+	});
+        return res.redirect('waiting');
 })
 
 app.get('/parkingDiagramSenior', function(req, res) {
