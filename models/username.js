@@ -5,8 +5,8 @@ timestamps = require('mongoose-timestamp');
 var AccountSchema = new Schema({
 	name: String,
   email: {
-	type: String,
-	unique: true	
+	type: String
+	//unique: true	
   },
   makemodel: String,
   plate: String,
